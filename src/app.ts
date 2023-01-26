@@ -5,14 +5,16 @@ import {
   deleteList,
   getAllLists,
   getListById,
+  updateItem,
 } from "./logic";
 
 const app: Application = express();
 app.use(express.json());
 
-app.post("/purchaseList", createList);
 app.get("/purchaseList", getAllLists);
 app.get("/purchaseList/:id", getListById);
+app.post("/purchaseList", createList);
+app.patch("/purchaseList/:id/:name", updateItem);
 app.delete("/purchaseList/:id/:name", deleteItemFromList);
 app.delete("/purchaseList/:id", deleteList);
 
