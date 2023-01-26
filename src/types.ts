@@ -5,7 +5,7 @@ interface iListData {
 
 interface iListEntry {
   listName: string;
-  Data: iListData[];
+  data: iListData[];
 }
 
 interface iTreatedList extends iListEntry {
