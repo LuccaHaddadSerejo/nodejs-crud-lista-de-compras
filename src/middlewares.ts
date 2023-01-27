@@ -1,13 +1,13 @@
 import { Request, Response, NextFunction, request } from "express";
 import { database } from "./database";
-import { iTreatedList } from "./types";
+import { iHandledList } from "./types";
 
 const checkIfListExists = (
   req: Request,
   res: Response,
   next: NextFunction
 ): Response | void => {
-  const findList: iTreatedList | undefined = database.find(
+  const findList: iHandledList | undefined = database.find(
     (list) => list.id === +req.params.id
   );
 

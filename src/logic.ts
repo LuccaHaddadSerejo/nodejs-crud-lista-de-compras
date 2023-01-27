@@ -30,7 +30,7 @@ const validateListData = (payload: any): iListEntry => {
 
   if (!validateKeys) {
     throw new Error(
-      `The required keys are: ${requiredKeys[0]} and ${requiredKeys[1]}`
+      `The required keys are: '${requiredKeys[0]}' and '${requiredKeys[1]}'`
     );
   }
 
@@ -57,13 +57,13 @@ const validateItemData = (payload: any): iListData => {
 
   if (!validateKeys) {
     throw new Error(
-      `The required keys are: ${requiredKeys[0]} and ${requiredKeys[1]}`
+      `The required keys are: '${requiredKeys[0]}' and '${requiredKeys[1]}'`
     );
   }
 
   if (keyFilter.length > 0) {
     throw new Error(
-      `You can only update ${requiredKeys[0]} and ${requiredKeys[1]}`
+      `You can only update '${requiredKeys[0]}' and '${requiredKeys[1]}'`
     );
   }
 
@@ -76,13 +76,30 @@ const createList = (req: Request, res: Response): Response => {
 
     if (typeof validateList.listName !== typeof "string") {
       return res.status(400).json({
-        message: `The type of the key /ListName/ needs to be a string`,
+        message: `The type of the key 'listName' needs to be a string`,
       });
     }
 
     if (Array.isArray(validateList.data) === false) {
       return res.status(400).json({
-        message: `The type of the key /data/ needs to be a array`,
+        message: `The type of the key 'data' needs to be a array`,
+      });
+    }
+
+    const checkAllItensKeys = validateList.data.map((item) => {
+      const keys = Object.keys(item);
+      const checkKeys = keys.every(
+        (key) => key === "name" || key === "quantity"
+      );
+      return checkKeys;
+    });
+
+    const itemKeyValidation = checkAllItensKeys.some((elt) => elt === false);
+
+    if (itemKeyValidation) {
+      return res.status(400).json({
+        message:
+          "Invalid key inside a data object, you can only send 'name' or 'quantity' keys",
       });
     }
 
@@ -132,17 +149,19 @@ const deleteItemFromList = (req: Request, res: Response): Response => {
 const updateItem = (req: Request, res: Response): Response => {
   try {
     const validateItem: iListData = validateItemData(req.body);
-    const validateItemKeys = Object.keys(validateItem);
+    const validateItemKeys = Object.values(validateItem);
+    console.log(validateItemKeys);
     const checkKeyTypes = validateItemKeys.every(
-      (key) => typeof key !== "string"
+      (value) => typeof value !== "string"
     );
+    console.log(checkKeyTypes);
     const foundList = req.groceryList.foundList;
     const foundItem = req.groceryList.foundItem;
     const itemIndex = req.groceryList.foundList!.data.indexOf(foundItem!);
 
     if (checkKeyTypes) {
       return res.status(400).json({
-        message: `Invalid key type, keys needs to be strings.`,
+        message: `Invalid key type, key values needs to be strings.`,
       });
     }
 
