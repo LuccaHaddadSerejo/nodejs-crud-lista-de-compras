@@ -10,7 +10,7 @@ interface iListEntry {
   data: iListData[];
 }
 
-interface iTreatedList extends iListEntry {
+interface iHandledList extends iListEntry {
   id: number;
 }
 
@@ -19,7 +19,7 @@ type iListEntryRequiredKeys = "listName" | "data";
 export {
   iListData,
   iListEntry,
-  iTreatedList,
+  iHandledList,
   iListDataRequiredKeys,
   iListEntryRequiredKeys,
 };

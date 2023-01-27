@@ -1,4 +1,5 @@
 import express, { Application } from "express";
+import { checkIfListExists, checkIfItemExists } from "./middlewares";
 import {
   createList,
   deleteItemFromList,
@@ -12,11 +13,21 @@ const app: Application = express();
 app.use(express.json());
 
 app.get("/purchaseList", getAllLists);
-app.get("/purchaseList/:id", getListById);
+app.get("/purchaseList/:id", checkIfListExists, getListById);
 app.post("/purchaseList", createList);
-app.patch("/purchaseList/:id/:name", updateItem);
-app.delete("/purchaseList/:id/:name", deleteItemFromList);
-app.delete("/purchaseList/:id", deleteList);
+app.patch(
+  "/purchaseList/:id/:name",
+  checkIfListExists,
+  checkIfItemExists,
+  updateItem
+);
+app.delete("/purchaseList/:id", checkIfListExists, deleteList);
+app.delete(
+  "/purchaseList/:id/:name",
+  checkIfListExists,
+  checkIfItemExists,
+  deleteItemFromList
+);
 
 const port: number = 3000;
 const runningMessage: string = `Server running on http://localhost:${port}`;

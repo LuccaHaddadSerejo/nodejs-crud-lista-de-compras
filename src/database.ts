@@ -1,5 +1,5 @@
-import { iTreatedList } from "./types";
+import { iHandledList } from "./types";
 
-let database: iTreatedList[] = [];
+let database: iHandledList[] = [];
 
 export { database };
