@@ -121,7 +121,7 @@ const createList = (req: Request, res: Response): Response => {
 };
 
 const getAllLists = (req: Request, res: Response): Response => {
-  return res.status(201).json(database);
+  return res.status(200).json(database);
 };
 
 const getListById = (req: Request, res: Response): Response => {
